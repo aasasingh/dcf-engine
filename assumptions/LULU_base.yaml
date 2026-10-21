@@ -1,0 +1,35 @@
+# LULU base case, set 2026-10-21. Base period: TTM to Aug-26 (revenue $11.09B).
+# Rates are decimals (0.05 = 5%).
+
+# Next 12 months: FY26 guide midpoint $10.43B implies H2 FY26 down ~10.5% YoY,
+# plus a smaller decline in H1 FY27. About $10.3B vs $11.09B TTM.
+growth_year1: -0.07
+# From year 2: Americas roughly flat, China and international (~30% of sales)
+# growing low double digits. Blended ~3%, fading to terminal.
+growth_start: 0.03
+terminal_growth: 0.025
+forecast_years: 10
+
+# H1 FY26 EBIT margin was 15.0%; the FY26 EPS guide implies ~14.5%, with H2 worse
+# (tariffs, markdowns). Partial recovery to 17%: below the 20-24% of FY21-FY24
+# because tariffs look structural and pricing power has weakened.
+margin_start: 0.14
+margin_target: 0.17
+margin_fade_years: 5
+
+tax_rate: 0.2947          # 5-year median effective rate
+d_and_a_pct_revenue: 0.045  # TTM 4.9%, 3-year avg 4.2%
+# TTM capex 5.7% and falling as store growth slows; stays above D&A to fund international.
+capex_pct_revenue: 0.055
+# TTM 10.1% is inflated by excess inventory; 5-year average 5.5%. Assume partial cleanup.
+nwc_pct_revenue: 0.07
+
+risk_free: 0.0512         # 10Y Treasury, 2026-10-20
+# Measured 5Y beta is 0.91. Using 1.05 (apparel/discretionary peer level) since
+# fashion and brand risk look higher than the measured beta suggests.
+beta: 1.05
+equity_risk_premium: 0.045
+pre_tax_cost_of_debt: 0.0662  # no funded debt, so this has no effect
+wacc_override: null
+mid_year_convention: true
+leases_as_debt: false     # lease cost already sits inside EBIT under US GAAP
