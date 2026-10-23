@@ -80,4 +80,4 @@ The discount rate and the target margin move value the most. No single input cha
 
 At $99, the market is pricing in a worse future for lululemon than its own history suggests. My base case gives $153. Even my stressed cases mostly stay above the current price. The main risk is that the margin decline is permanent, so the next few quarters of margin results matter more than anything else in this model.
 
-*Student research project, not investment advice. Model, data and assumptions: github.com/aasasingh/dcf-engine*
+*Student research project, not investment advice. Model, data and assumptions: github.com/aasasingh/dcf-engine. Web app: dcf-engine-app.streamlit.app*

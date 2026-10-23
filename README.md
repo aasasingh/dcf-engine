@@ -4,6 +4,8 @@ A discounted cash flow model that pulls a company's financials straight from its
 It values the company the usual way, then runs the model in reverse to answer a more useful
 question: what does the current share price assume about future growth and margins?
 
+**Try it: [dcf-engine-app.streamlit.app](https://dcf-engine-app.streamlit.app/)** (enter a ticker, move the assumption sliders, download the Excel model)
+
 ## Result: lululemon (LULU), October 2026
 
 At $99.01, the market is pricing lululemon as if its operating margin falls to about **10.4%**
@@ -21,6 +23,7 @@ My base case has margins recover partway, to 17%, and gives **$153 per share, 54
 
 ![Value per share when one input changes](output/LULU_tornado.png)
 
+- **[Open the web app](https://dcf-engine-app.streamlit.app/)**: the same model with sliders, for any US ticker.
 - **[Read the memo (PDF)](docs/LULU_memo.pdf)**: the full write-up, with assumptions, stress tests and risks.
 - **[Download the Excel model](output/LULU_dcf.xlsx)**: live formulas. Change any blue input and the whole model updates.
 - **Assumptions**: [`assumptions/LULU_base.yaml`](assumptions/LULU_base.yaml), with the reasoning behind each number.
