@@ -129,6 +129,10 @@ def annual_financials(facts: dict, years: int = 10) -> pd.DataFrame:
     # Keep years where the core statements exist, then the most recent N of those.
     core = df.loc[["revenue", "ebit", "cfo", "total_assets"]].notna().all()
     df = df.loc[:, core[core].index].iloc[:, -years:]
+    if df.empty:
+        missing = [k for k in ("revenue", "ebit", "cfo", "total_assets") if data[k].empty]
+        raise ValueError("no fiscal year has all the core figures in its 10-K filings"
+                         + (f" (missing: {', '.join(missing)})" if missing else ""))
 
     for item in ZERO_IF_MISSING:
         df.loc[item] = df.loc[item].fillna(0.0)

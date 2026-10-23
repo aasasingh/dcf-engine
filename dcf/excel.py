@@ -322,7 +322,7 @@ def _sensitivity_sheet(wb: Workbook, x: Analysis) -> None:
         ws.column_dimensions[col].width = 14
 
 
-def write_workbook(x: Analysis, path: Path) -> Path:
+def build_workbook(x: Analysis) -> Workbook:
     wb = Workbook()
     _inputs_sheet(wb, x)
     _dcf_sheet(wb, x)
@@ -335,6 +335,10 @@ def write_workbook(x: Analysis, path: Path) -> Path:
             for c in row:
                 if c.column > 1:
                     c.alignment = Alignment(horizontal="right")
+    return wb
+
+
+def write_workbook(x: Analysis, path: Path) -> Path:
     path.parent.mkdir(parents=True, exist_ok=True)
-    wb.save(path)
+    build_workbook(x).save(path)
     return path

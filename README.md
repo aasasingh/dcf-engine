@@ -4,12 +4,45 @@ A discounted cash flow model that pulls a company's financials straight from its
 It values the company the usual way, then runs the model in reverse to answer a more useful
 question: what does the current share price assume about future growth and margins?
 
-The output is an Excel model with live formulas, so every number can be traced and changed.
+## Result: lululemon (LULU), October 2026
 
-```
-python -m dcf LULU            # uses cached data
+At $99.01, the market is pricing lululemon as if its operating margin falls to about **10.4%**
+and stays there. That would be lower than any year in the last decade (the low was 16.4% in FY22).
+My base case has margins recover partway, to 17%, and gives **$153 per share, 54% above the price**.
+
+![EBIT margin: reported, base case, and what the price implies](output/LULU_margin.png)
+
+| | Value per share | vs. price |
+|---|---|---|
+| Bull | $198 | +100% |
+| Base | $153 | +54% |
+| Bear | $115 | +17% |
+| Margin 10%, no growth | $89 | -10% |
+
+![Value per share when one input changes](output/LULU_tornado.png)
+
+- **[Read the memo (PDF)](docs/LULU_memo.pdf)**: the full write-up, with assumptions, stress tests and risks.
+- **[Download the Excel model](output/LULU_dcf.xlsx)**: live formulas. Change any blue input and the whole model updates.
+- **Assumptions**: [`assumptions/LULU_base.yaml`](assumptions/LULU_base.yaml), with the reasoning behind each number.
+
+## Run it yourself
+
+Needs Python 3.11+. The SEC requires a contact email in every request, so set `SEC_USER_AGENT` first.
+
+```powershell
+python -m venv .venv
+.venv\Scripts\Activate.ps1          # macOS/Linux: source .venv/bin/activate
+pip install -r requirements.txt
+$env:SEC_USER_AGENT = "Your Name you@email.com"   # macOS/Linux: export SEC_USER_AGENT="..."
+
+python -m dcf LULU            # writes output/LULU_dcf.xlsx and charts
 python -m dcf LULU --refresh  # re-downloads SEC and market data
+streamlit run app.py          # web version with sliders
 ```
+
+Any US company that files 10-Ks should work. The first run for a new ticker creates
+`assumptions/<TICKER>_base.yaml` with default values based on history. Edit that file and
+run again to use your own numbers. To rebuild the memo PDF: `python scripts/build_memo.py docs/LULU_memo.md`.
 
 ## How it works
 
@@ -22,6 +55,8 @@ python -m dcf LULU --refresh  # re-downloads SEC and market data
 | Reverse DCF | `dcf/reverse.py` | Solves for the growth rate or margin that makes the model's value equal the share price. |
 | Sensitivity | `dcf/sensitivity.py` | WACC vs terminal growth grid, a tornado chart of which inputs matter most, and bear/base/bull cases. |
 | Excel | `dcf/excel.py` | Writes the workbook. Inputs are named cells, so changing one updates the whole model. |
+| Charts | `dcf/charts.py` | Margin, tornado and scenario charts, used by the README, the memo and the web app. |
+| Web app | `app.py` | Streamlit front end: enter a ticker, move the assumption sliders, download the workbook. |
 
 ## Tests
 
@@ -36,3 +71,4 @@ python -m dcf LULU --refresh  # re-downloads SEC and market data
 - Cash flows are discounted from the end of the base period, not from today.
 - The default assumptions just extend history. They're a starting point, not a forecast.
 - Doesn't work for banks, insurers or REITs, since their cash flows don't fit this model.
+- Only US filers (10-K). Companies that don't report an operating income line, like Nike, aren't supported yet.

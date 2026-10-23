@@ -24,6 +24,10 @@ CACHE_MAX_AGE_DAYS = 7
 
 def _get_json(url: str) -> dict:
     resp = requests.get(url, headers={"User-Agent": USER_AGENT}, timeout=30)
+    if resp.status_code == 403 and "SEC_USER_AGENT" not in os.environ:
+        raise RuntimeError("The SEC blocked the request because it needs a contact email. "
+                           'Set SEC_USER_AGENT to something like "Your Name you@email.com" '
+                           "and try again.")
     resp.raise_for_status()
     time.sleep(0.15)  # stay well under the SEC's 10 requests/second limit
     return resp.json()

@@ -3,6 +3,7 @@ from __future__ import annotations
 
 import argparse
 
+from .charts import save_charts
 from .excel import write_workbook
 from .pipeline import analyze
 from .fetch import ROOT
@@ -17,6 +18,7 @@ def main() -> None:
     x = analyze(args.ticker, args.refresh)
     r, a, b = x.result, x.assumptions, x.base
     out = write_workbook(x, ROOT / "output" / f"{x.ticker}_dcf.xlsx")
+    charts = save_charts(x, ROOT / "output")
 
     print(f"\n{x.company} ({x.ticker})  base {b.label}  price ${b.price:,.2f} ({x.market.as_of})")
     print(f"Assumptions: {x.assumptions_path.relative_to(ROOT)}")
@@ -36,6 +38,7 @@ def main() -> None:
     print("\nScenarios: " + "   ".join(f"{k} ${v:,.0f}" for k, v in s["value_per_share"].items())
           + f"   weighted ${s.attrs['weighted_value']:,.0f}")
     print(f"\nWorkbook: {out.relative_to(ROOT)}")
+    print("Charts:   " + ", ".join(str(c.relative_to(ROOT)) for c in charts))
 
 
 if __name__ == "__main__":

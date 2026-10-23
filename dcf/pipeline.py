@@ -1,7 +1,7 @@
 """Wire the stages together: fetch -> clean -> assumptions -> model -> analyses."""
 from __future__ import annotations
 
-from dataclasses import dataclass
+from dataclasses import dataclass, replace
 from pathlib import Path
 
 import pandas as pd
@@ -69,18 +69,20 @@ def analyze(ticker: str, refresh: bool = False) -> Analysis:
 
     defaults = asm.default_assumptions(hist, latest, md.risk_free, md.beta_adjusted)
     a, path = asm.load(ticker, "base", defaults)
-    return Analysis(
-        ticker=ticker,
-        company=facts.get("entityName", ticker),
-        hist=hist,
-        latest=latest,
-        market=md,
-        base=base,
+    x = Analysis(ticker=ticker, company=facts.get("entityName", ticker), hist=hist,
+                 latest=latest, market=md, base=base, assumptions=a, assumptions_path=path,
+                 result=None, implied={}, grid=None, tornado=None, scenarios=None)
+    return revalue(x, a)
+
+
+def revalue(x: Analysis, a: asm.Assumptions) -> Analysis:
+    """Same company and data, new assumptions. Used by the web app's sliders."""
+    return replace(
+        x,
         assumptions=a,
-        assumptions_path=path,
-        result=run_dcf(a, base),
-        implied=reverse_dcf(a, base),
-        grid=wacc_terminal_grid(a, base),
-        tornado=tornado(a, base),
-        scenarios=scenario_table(asm.scenarios(a), base),
+        result=run_dcf(a, x.base),
+        implied=reverse_dcf(a, x.base),
+        grid=wacc_terminal_grid(a, x.base),
+        tornado=tornado(a, x.base),
+        scenarios=scenario_table(asm.scenarios(a), x.base),
     )
