@@ -1,0 +1,26 @@
+[server]
+runOnSave = false
+
+[client]
+toolbarMode = "minimal"
+
+[theme]
+base = "light"
+primaryColor = "#111111"
+backgroundColor = "#FAF8F3"
+secondaryBackgroundColor = "#F3F0E8"
+textColor = "#111111"
+linkColor = "#111111"
+borderColor = "#E1DED6"
+font = "IBM Plex Mono:https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&display=swap, monospace"
+headingFont = "Newsreader:https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400;6..72,500&display=swap, serif"
+codeFont = "IBM Plex Mono, monospace"
+baseFontSize = 14
+baseRadius = "0px"
+buttonRadius = "0px"
+showWidgetBorder = true
+showSidebarBorder = true
+
+[theme.sidebar]
+backgroundColor = "#FAF8F3"
+secondaryBackgroundColor = "#F3F0E8"
